@@ -1,29 +1,22 @@
 import play.api.libs.json.Json
 
 /** Handles all interactions with Wikipedia API */
-class Wikipedia {
+class Wikipedia extends TextExtractor {
 
-    //Generic GET request
-    // TODO no brackets?
-    @throws(classOf[java.io.IOException])
-    private def get(url: String): String = {
-        io.Source.fromURL(url).mkString
-    }
-
-    private def createUrl(urlArgs: Array[String]): String = {
-        urlArgs.mkString("/")
+    def extract(input: String): String = {
+        // TODO use input. For now just use random
+        getRandomExtract()
     }
 
     /** Return all content provided by random page wikipedia endpoint */
     def getRandomPage(): String = {
-        get(
-            createUrl(
-                Array(
-                    Wikipedia.Host, Wikipedia.BasePath, Wikipedia.PagePath,
-                    Wikipedia.RandomPath, Wikipedia.SummaryPath
-                )
+        Wikipedia.ApiHelp.getFromUrlArgs(
+            Array(
+                Wikipedia.Host, Wikipedia.BasePath, Wikipedia.PagePath,
+                Wikipedia.RandomPath, Wikipedia.SummaryPath
             )
         )
+        
     }
 
     /** Return Extract Section Only provided by random page wikipedia endpoint */
@@ -46,4 +39,6 @@ object Wikipedia {
 
     // Json Blob Fields
     private val ExtractField = "extract"
+
+    private val ApiHelp = new ApiHelper()
 }

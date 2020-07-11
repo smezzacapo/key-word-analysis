@@ -3,15 +3,15 @@
 object Main extends App {
     println("Starting Application. Hello, World! Yet Again!")
     try {
-        val wikiHelper = new Wikipedia()
-        val currentExtract = wikiHelper.getRandomExtract()
-        println("CURRENT EXTRACT: " + currentExtract)
+        val textExtract = TextExtractor("wikipedia")
+        val currentText = textExtract.extract("todoMyKeyWord")
+        println("CURRENT TEXT: " + currentText)
         val textHelper = new TextAnalysis()
-        val currentSentiment = textHelper.getTextSentiment(currentExtract)
+        val currentSentiment = textHelper.getTextSentiment(currentText)
         println("EXTRACT SENTIMENT: " + currentSentiment)
     }
     catch {
-        case io: java.io.IOException => println("Failed to hit Wikipedia API: " + io)
+        case io: java.io.IOException => println("Failed to hit API to extract text: " + io)
         case il: IllegalArgumentException => println("Did not provide appropriate extract text: " + il)
         case e: Exception => println("Unanticipated Exception: " + e)
     }

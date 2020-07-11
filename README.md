@@ -47,8 +47,8 @@ Frontend / API
     SCALA UPDATES
 
     1. Initial commit to github **
-    1. Fix package naming
-    2. Interface for 'analysis getters or whatever' wikipedia/reddit
+    1. Fix package naming **
+    2. Interface for 'analysis getters or whatever' wikipedia/reddit **
     3. Update wikipedia to take input and grab N results
     4. TextAnalysis should be the 'api' hitter. Have a fake method for now that returns json for what to do
         -Rename to TextAnalysisApiHelper?
