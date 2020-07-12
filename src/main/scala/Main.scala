@@ -3,12 +3,17 @@
 object Main extends App {
     println("Starting Application. Hello, World! Yet Again!")
     try {
-        val textExtract = TextExtractor("wikipedia")
-        val currentText = textExtract.extract("todoMyKeyWord")
-        println("CURRENT TEXT: " + currentText)
-        val textHelper = new TextAnalysis()
-        val currentSentiment = textHelper.getTextSentiment(currentText)
-        println("EXTRACT SENTIMENT: " + currentSentiment)
+        val extractionHelper = TextExtractor("wikipedia")
+        val extractedText = extractionHelper.extract("NFL", "5")
+        val analysisHelper = new TextAnalysis()
+        for (text <- extractedText) {
+            Option(text) match {
+                case Some(s) if !s.isEmpty =>
+                    val currentSentiment = analysisHelper.getTextSentiment(s)
+                    println("EXTRACT SENTIMENT: " + currentSentiment)
+                case _ => println("Empty text summary found, skipping.")
+            }
+        }
     }
     catch {
         case io: java.io.IOException => println("Failed to hit API to extract text: " + io)
