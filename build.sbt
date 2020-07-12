@@ -26,12 +26,18 @@ version := "1.0"
 // mostly only necessary if you intend to publish your library's binaries on a
 // place like Sonatype or Bintray.
 
+resolvers ++= Seq(
+  Resolver.sonatypeRepo("releases"),
+  Resolver.sonatypeRepo("snapshots")
+)
+
 
 // Want to use a published library in your project?
 // You can define other libraries as dependencies in your build like this:
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.0"
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.5.2" artifacts (Artifact("stanford-corenlp", "models"), Artifact("stanford-corenlp"))
+libraryDependencies += "com.concurrentthought.cla" %% "command-line-arguments" % "0.6.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
 
