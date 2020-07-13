@@ -4,7 +4,7 @@
  * Factory Pattern
  */
 trait TextExtractor {
-    def extract(input: String, limit: String): List[String]
+    def extract(input: String, limit: String): List[SentimentResult]
 }
 
 object TextExtractor {

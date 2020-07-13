@@ -1,4 +1,3 @@
-import java.awt.RenderingHints.Key
 /** Query random wikipedia page and return Sentiment of the extract
 */
 object Main extends App {
@@ -8,13 +7,14 @@ object Main extends App {
         println("Processing the following key text: " + input.keyText)
         println("Using the following data source: " + input.dataSource)
         val extractionHelper = TextExtractor(input.dataSource)
-        val extractedText = extractionHelper.extract(input.keyText, input.limit)
+        val currentResults: List[SentimentResult] = extractionHelper.extract(input.keyText, input.limit)
         val analysisHelper = new TextAnalysis()
-        for (text <- extractedText) {
-            Option(text) match {
+        for (result <- currentResults) {
+            Option(result.summary) match {
                 case Some(s) if !s.isEmpty =>
-                    val currentSentiment = analysisHelper.getTextSentiment(s)
-                    println("EXTRACT SENTIMENT: " + currentSentiment)
+                    result.sentimentCounts = analysisHelper.getTextSentiment(s)
+                    println("PAGE NAME: " + result.pageName)
+                    println("RESULTS: " + result.sentimentCounts)
                 case _ => println("Empty text summary found, skipping.")
             }
         }

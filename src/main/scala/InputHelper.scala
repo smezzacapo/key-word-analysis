@@ -17,7 +17,7 @@ class InputHelper {
             flags    = Seq("--dataSource", "--ds"),
             help     = "Where to extract data related to keyText from."
         )
-        val limitArg = Opt.string(
+        val limitArg = Opt.int(
             name     = limit,
             flags    = Seq("--limit", "--l"),
             help     = "Max results to return from the user provided dataSource."
@@ -30,7 +30,7 @@ class InputHelper {
         new KeyTextInput(
             finalArgs.get(keyText).getOrElse(throw new IllegalArgumentException("No Key Text Provided")),
             finalArgs.get(dataSource).getOrElse(throw new IllegalArgumentException("No Data Source Provided")),
-            finalArgs.get(limit).getOrElse(throw new IllegalArgumentException("No Limit Provided"))
+            finalArgs.get(limit).getOrElse(throw new IllegalArgumentException("No Limit Provided")).toString
         )
     }
 }

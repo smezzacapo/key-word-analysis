@@ -13,13 +13,16 @@ class Wikipedia extends TextExtractor {
       * @param limit - number of search results to include
       * @return list of string Wikipedia page summaries
       */
-    def extract(input: String, limit: String): List[String] = {
+    def extract(input: String, limit: String): List[SentimentResult] = {
         val allPageNames: List[String] = getMatchingPageNames(input, limit)
-        val allPages = for (name <- allPageNames) yield {
-            getPageByName(name)
+        val allPages: List[SentimentResult] = for (name <- allPageNames) yield {
+            val result = new SentimentResult(name)
+            result.fullPage = getPageByName(name)
+            result
         }
-        for (page <- allPages) yield {
-            getSummaryFromPage(page)
+        for (pageResult <- allPages) yield {
+            pageResult.summary = getSummaryFromPage(pageResult.fullPage)
+            pageResult
         }
     }
 
