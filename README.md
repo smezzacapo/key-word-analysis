@@ -1,61 +1,60 @@
+This is a simple project to help refamiliarize myself with Scala.
+
+For a user-provided word or phrase, query Wikipedia for up to N related pages.
+For each related page, perform sentiment analysis on the summary using StanfordCoreNLP (https://stanfordnlp.github.io/CoreNLP/).
+Print the total number of positive vs neutral vs negative sentences.
+
+
+Requirements:
+Scala: 2.13.1
+SBT: 1.3.12
+
+run --help 
+Lists all available command line arguments
+
+NOTE: All user provided phrases should include underscores between words.
+
+Examples:
+
+1)
+run --kt=Barack_Obama --ds=wikipedia --l=5
+
+PAGE NAME: Barack Obama
+RESULTS: Map(NEGATIVE -> 25, POSITIVE -> 1, NEUTRAL -> 1)
+PAGE NAME: Barack Obama citizenship conspiracy theories
+RESULTS: Map(NEGATIVE -> 12, NEUTRAL -> 2)
+PAGE NAME: Barack Obama 2008 presidential campaign
+RESULTS: Map(NEGATIVE -> 7, NEUTRAL -> 1)
+PAGE NAME: Barack Obama Sr.
+RESULTS: Map(NEGATIVE -> 13, POSITIVE -> 1, NEUTRAL -> 3)
+PAGE NAME: Barack Obama Supreme Court candidates
+RESULTS: Map(NEGATIVE -> 10, NEUTRAL -> 2)
+
+
+
+2)
+run --kt=Donald_Trump --ds=wikipedia --l=5
+
+PAGE NAME: Donald Trump
+RESULTS: Map(NEGATIVE -> 24, POSITIVE -> 3, NEUTRAL -> 2)
+PAGE NAME: Donald Trump Jr.
+RESULTS: Map(NEGATIVE -> 9, NEUTRAL -> 1)
+PAGE NAME: Donald Trump sexual misconduct allegations
+RESULTS: Map(NEGATIVE -> 16, NEUTRAL -> 1)
+PAGE NAME: Donald Trump 2016 presidential campaign
+RESULTS: Map(NEGATIVE -> 17, NEUTRAL -> 1)
+PAGE NAME: Donald Trump on social media
+RESULTS: Map(NEGATIVE -> 11, NEUTRAL -> 2, POSITIVE -> 1)
+
+
+
+
 TODO:
-
-Just rough notes for now, to be cleaned up after the initial project structure has taken form. 
-
-Backend:
-
-- SQS queue input
-    - Text to match, number of articles to grab extract from, isRandom optional
-    - Update main to read from SQS and iterate over N messages concurrently
-- Postgres RDS output
-    - Table: Text key words to Sentiment
-    - Table: Text key words to full extract
-    - Concept of run_id to compare the same text key word across runs for changes over time?
-
-- Add unique word counter to TextAnalysis
-    - Store unique word counts by Text Key Word in RDS table
-- Other 'api' based classes such as Reddit etc. Write an interface, go back to Wikipedia and extend it
-
-------------
-
-Orchestration:
-
-- Scala dockerFile
-- Create DAGFile using Docker Operator and run scala process every N minutes
-    - SQS sensor instead of set interval?
-
-------------
-
-Frontend / API
-
-- React UI
-    - Page for adding 1 or more Key Words
-    - Page for viewing results by searching 1 or more existing Key Words (autocomplete)
-    - Different websites - configurable. Wikipedia by default but also Reddit etc.
-    - Some sort of report generation / simplistic segmentation? AKA in last N days what are top N words associated with positive sentiments?
-
-- .net Core API
-    - Writes user provided new Key Words to SQS to be processed
-    - Reads from Postgres RDS to return content to UI
-        - WHERE should the DAL actually live? .net core API that is called by scala/other code? Prefer not to have two separate code bases reading/writing from there.
-    
-
-
-    ------------------------------
-
-
-    SCALA UPDATES
-
-    1. Initial commit to github **
-    1. Fix package naming **
-    2. Interface for 'analysis getters or whatever' wikipedia/reddit **
-    3. Update wikipedia to take input and grab N results **
-    4. TextAnalysis should be the 'api' hitter. Have a fake method for now that returns json for what to do
-        -Rename to TextAnalysisApiHelper?
-    5. Reddit version
-    6. Where to move sentiment? SentimentAnalysis.scala? 
-    7. Generic CRUD operation helper class?
-    8. Output to TextAnalysisAPIHelper
-
-
-    For now ONLY SENTIMENTS
+1. Fix broken tests and increase coverage to >70%. 
+2. Replace println with actual logging support.
+    Maybe: http://software.clapper.org/grizzled-slf4j/index.html
+3. Add pre-commit.
+4. Add DockerFile. 
+5. Implement a Reddit TextExtractor.
+6. Write results to a postgres DB (RDS AWS free tier?) - this will allow for analysis of changing sentiment over time.
+7. Github Actions
